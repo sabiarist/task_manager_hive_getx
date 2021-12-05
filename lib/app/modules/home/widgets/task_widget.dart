@@ -34,37 +34,43 @@ class _TaskWidgetState extends State<TaskWidget> {
                 blurRadius: 10)
           ]),
       child: ListTile(
-          leading: GestureDetector(
-            onTap: () {
-              widget.task.isCompleted = !widget.task.isCompleted;
-              widget.task.save();
-            },
-            child: Container(
-              decoration: BoxDecoration(
-                  color: widget.task.isCompleted ? Colors.green : Colors.white,
-                  shape: BoxShape.circle,
-                  border: Border.all(color: Colors.grey, width: .8)),
-              child: const Icon(
-                Icons.check,
-                color: Colors.white,
-              ),
+        leading: GestureDetector(
+          onTap: () {
+            widget.task.isCompleted = !widget.task.isCompleted;
+            widget.task.save();
+          },
+          child: Container(
+            decoration: BoxDecoration(
+                color: widget.task.isCompleted ? Colors.green : Colors.white,
+                shape: BoxShape.circle,
+                border: Border.all(color: Colors.grey, width: .8)),
+            child: const Icon(
+              Icons.check,
+              color: Colors.white,
             ),
           ),
-          title: widget.task.isCompleted
-              ? Text(
-                  taskController.text,
-                  style: const TextStyle(
-                      color: Colors.grey,
-                      decoration: TextDecoration.lineThrough),
-                )
-              : TextField(
-                  controller: taskController,
-                  decoration: const InputDecoration(border: InputBorder.none),
-                ),
-          trailing: Text(
-            DateFormat('hh:mm a').format(widget.task.createdAt),
-            style: const TextStyle(fontSize: 14, color: Colors.grey),
-          )),
+        ),
+        title: widget.task.isCompleted
+            ? Text(
+                taskController.text,
+                style: const TextStyle(
+                    color: Colors.grey, decoration: TextDecoration.lineThrough),
+              )
+            : TextField(
+                controller: taskController,
+                decoration: const InputDecoration(border: InputBorder.none),
+                onSubmitted: (value) {
+                  if (value.isNotEmpty){
+                    widget.task.name = value;
+                    widget.task.save();
+                  }
+                },
+              ),
+        trailing: Text(
+          DateFormat('hh:mm a').format(widget.task.createdAt),
+          style: const TextStyle(fontSize: 14, color: Colors.grey),
+        ),
+      ),
     );
   }
 }
