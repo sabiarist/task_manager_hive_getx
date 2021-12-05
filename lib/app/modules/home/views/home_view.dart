@@ -5,6 +5,7 @@ import 'package:task_manager_hive_getx/app/shared/models/task.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:task_manager_hive_getx/main.dart';
 
+
 class HomeView extends StatefulWidget {
   const HomeView({Key? key}) : super(key: key);
 
@@ -100,7 +101,7 @@ class _HomeViewState extends State<HomeView> {
                     ],
                   ),
                   onDismissed: (direction) {
-                    print('hey');
+                    base.dataStore.deleteTask(task: task);
                   },
                   key: Key(task.id),
                   child: TaskWidget(task: tasks[index]));
