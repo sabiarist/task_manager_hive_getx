@@ -10,12 +10,12 @@ Future<void> main() async {
   Hive.registerAdapter<Task>(TaskAdapter());
   var box = await Hive.openBox<Task>('tasks');
 
-  box.values.forEach((task) {
+  for (var task in box.values) {
     if(task.createdAt.day != DateTime.now().day){
       box.delete(task.id);
     }
-  });
-  runApp(const MyApp());
+  }
+  runApp(BaseWidget(child: MyApp()));
 }
 
 class   BaseWidget extends InheritedWidget{
