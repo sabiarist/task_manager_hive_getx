@@ -17,7 +17,7 @@ class Task extends HiveObject{
   bool isCompleted;
 
   factory Task.create({required String name, DateTime? createdAt }) =>
-      Task(id: Uuid().v1(),
+      Task(id: const Uuid().v1(),
           name: name,
           createdAt: createdAt ?? DateTime.now(),
           isCompleted: false,

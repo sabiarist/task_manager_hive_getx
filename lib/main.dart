@@ -15,7 +15,7 @@ Future<void> main() async {
       box.delete(task.id);
     }
   }
-  runApp(BaseWidget(child: MyApp()));
+  runApp(BaseWidget(child: const MyApp()));
 }
 
 class   BaseWidget extends InheritedWidget{
@@ -25,13 +25,9 @@ class   BaseWidget extends InheritedWidget{
   final Widget child;
 
 
-  static BaseWidget of(BuildContext context){
+  static BaseWidget? of(BuildContext context){
     final base = context.dependOnInheritedWidgetOfExactType<BaseWidget>();
-    if (base != null){
-      return base;
-    }else{
-      throw StateError('Could not find ancestor widget of type BaseWidget');
-    }
+    return base;
   }
 
   @override

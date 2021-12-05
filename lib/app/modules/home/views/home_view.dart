@@ -5,7 +5,6 @@ import 'package:task_manager_hive_getx/app/shared/models/task.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:task_manager_hive_getx/main.dart';
 
-
 class HomeView extends StatefulWidget {
   const HomeView({Key? key}) : super(key: key);
 
@@ -18,10 +17,10 @@ class _HomeViewState extends State<HomeView> {
   Widget build(BuildContext context) {
     final base = BaseWidget.of(context);
     return ValueListenableBuilder(
-      valueListenable: base.dataStore.listenToTasks(),
-      builder: (context, Box<Task> box, Widget? child){
+      valueListenable: base!.dataStore.listenToTasks(),
+      builder: (context, Box<Task> box, Widget? child) {
         var tasks = box.values.toList();
-        tasks.sort((a,b) => a.createdAt.compareTo(b.createdAt));
+        tasks.sort((a, b) => a.createdAt.compareTo(b.createdAt));
         return Scaffold(
           backgroundColor: Colors.white,
           appBar: AppBar(
@@ -47,7 +46,8 @@ class _HomeViewState extends State<HomeView> {
                           return Container(
                             width: MediaQuery.of(context).size.width,
                             padding: EdgeInsets.only(
-                                bottom: MediaQuery.of(context).viewInsets.bottom),
+                                bottom:
+                                    MediaQuery.of(context).viewInsets.bottom),
                             margin: const EdgeInsets.symmetric(horizontal: 16),
                             child: ListTile(
                               title: TextField(
@@ -56,24 +56,20 @@ class _HomeViewState extends State<HomeView> {
                                     hintText: 'Enter task name'),
                                 onSubmitted: (value) {
                                   Navigator.pop(context);
+                                  DatePicker.showTimePicker(context,
+                                      showSecondsColumn: false,
+                                      showTitleActions: true,
+                                      onConfirm: (date) {
+                                    if (value.isNotEmpty) {
+                                      var task = Task.create(
+                                        name: value,
+                                        createdAt: date,
+                                      );
+                                      base.dataStore.addTask(task: task);
+                                    }
+                                  }, currentTime: DateTime.now());
                                 },
                                 autofocus: true,
-                              ),
-                              trailing: IconButton(
-                                onPressed: () {
-                                  print('click click');
-                                  Navigator.pop(context);
-                                  DatePicker.showDateTimePicker(context,
-                                      showTitleActions: true,
-                                      minTime: DateTime.now(),
-                                      maxTime: DateTime(2019, 6, 7),
-                                      onChanged: (date) {
-                                        print('change $date');
-                                      }, onConfirm: (date) {
-                                        print('confirm $date');
-                                      }, currentTime: DateTime.now());
-                                },
-                                icon: const Icon(Icons.alarm),
                               ),
                             ),
                           );
